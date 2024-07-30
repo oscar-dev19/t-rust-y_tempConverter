@@ -24,26 +24,30 @@
 
 use std::io;
 
-fn main() {
+fn main() 
+{
     display_banner();
-    let user_input = get_user_input(); 
+    let (unit, degrees) = get_user_input();
 
-    let unit = user_input.0;
-    let degrees = user_input.1; 
-
-    let converted_degrees = if unit == 'f' 
-    {
-        println!("You entered {} degrees Fahrenheit.",degrees);
-        fahrenheit_to_celsius(degrees)
-    } 
-    else 
-    {
-        celsius_to_fahrenheit(degrees)
+    let converted_degrees = 
+    loop {
+        match unit {
+            'f' => {
+                println!("You entered {} degrees Fahrenheit.", degrees);
+                break fahrenheit_to_celsius(degrees);
+            },
+            'c' => {
+                println!("You entered {} degrees Celsius.", degrees);
+                break celsius_to_fahrenheit(degrees);
+            },
+            _ => {
+                println!("Invalid unit. Please enter 'f' for Fahrenheit or 'c' for Celsius.");
+                continue;
+            },
+        }
     };
-
     println!("Converted degrees: {}", converted_degrees);
 }
-
 /// Converts degrees Fahrenheit to Celsius.
 /// 
 /// * 'degrees' - Degrees in Fahrenheit.
