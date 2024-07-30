@@ -20,8 +20,8 @@
 //! * `fahrenheit_to_celsius(degrees: i32) -> f32`: Converts degrees Fahrenheit to Celsius.
 //! * `celsius_to_fahrenheit(degrees: i32) -> f32`: Converts degrees Celsius to Fahrenheit.
 //! * `display_banner()`: Displays a banner to the console.
-//! * `input_degrees()`:prompts user to enter degrees to convert.
-//! * `input_unit()`: prompts userr to input unit of entered degrees.
+//! * `input_degrees() -> i32`:prompts user to enter degrees to convert.
+//! * `input_unit()` -> char`: prompts userr to input unit of entered degrees.
 
 use std::io;
 
@@ -91,7 +91,11 @@ fn input_degrees() -> i32
         match degrees.trim().parse() 
         {
             Ok(num) => break num,
-            Err(_) => continue,
+            Err(_) => 
+            {
+                println!("Please enter a valid numerical value.");
+                continue;
+            }
         }
     }
 }
@@ -106,8 +110,13 @@ fn input_unit() -> char
             match input.trim().to_lowercase().as_str() {
                 "f" => break 'f',
                 "c" => break 'c',
-                _ => continue,
-            };
+                _ => 
+                {
+                    println!("Please enter a valid unit ('f' for fahrenheit or 'c' for celsius)");    
+                    continue;
+                }
+            }; 
+                
         
     }
 }
