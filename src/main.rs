@@ -7,7 +7,7 @@
 //!
 //! # Example
 //!
-//! ```
+//! ```bash
 //! $ cargo run
 //! Determine degrees in fahrenheit or celsius by entering 'f' or 'c' respectively followed by a space and the degrees.
 //! f 100
@@ -20,15 +20,16 @@
 //! * `fahrenheit_to_celsius(degrees: i32) -> f32`: Converts degrees Fahrenheit to Celsius.
 //! * `celsius_to_fahrenheit(degrees: i32) -> f32`: Converts degrees Celsius to Fahrenheit.
 //! * `display_banner()`: Displays a banner to the console.
-//! * `get_user_input() -> (char, i32)`: Prompts the user for input and returns the unit and degrees as a tuple.
+//! * `input_degrees()`:prompts user to enter degrees to convert.
+//! * `input_unit()`: prompts userr to input unit of entered degrees.
 
 use std::io;
 
 fn main() 
 {
     display_banner();
-    let (unit, degrees) = get_user_input();
-
+    let degrees = input_degrees();
+    let unit = input_unit();
     let converted_degrees = 
     loop {
         match unit {
@@ -80,20 +81,33 @@ fn display_banner()
 
 }
 
-fn get_user_input() -> (char,i32){
-    println!("Determine degrees in fahrenheit or celsius by entering 'f' or 'c' respectively followed by a space and the degrees.");
-    let mut input = String::new();
-    io::stdin().read_line(&mut input)
-               .expect("Failed to read line");
-
-    let parts: Vec<&str> = input.trim().split_whitespace().collect();
-    if parts.len() != 2 
+fn input_degrees() -> i32
+{
+    loop 
     {
-        println!("Invalid input format. Please enter 'f' or 'c' followed by a space and the degrees.");
+        println!("Enter degrees to convert:");
+        let mut degrees = String::new();
+        io::stdin().read_line(&mut degrees).expect("Failed to read degree input.");
+        match degrees.trim().parse() 
+        {
+            Ok(num) => break num,
+            Err(_) => continue,
+        }
     }
+}
 
-    let unit = parts[0].chars().next().expect("Expected a character for unit");
-    let degrees = parts[1].parse::<i32>().expect("Expected an integer for degrees");
-    
-    return (unit, degrees)
+fn input_unit() -> char
+{
+    loop {
+        
+            println!("Enter degree unit to convert from (f for fahrenheit or c for celsius):");
+            let mut input = String::new();
+            io::stdin().read_line(&mut input).expect("Failed to read line");
+            match input.trim().to_lowercase().as_str() {
+                "f" => break 'f',
+                "c" => break 'c',
+                _ => continue,
+            };
+        
+    }
 }
